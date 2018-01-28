@@ -20,21 +20,21 @@ Configures the virtualization provider network and IP for given hosts. This is u
 * `ansible_virtualization_type` in ['RHEV', 'VMware']
 
 #### Options
-| parameter                     | required                                     | default                        | choices                                       | comments
-|-------------------------------|----------------------------------------------|--------------------------------|-----------------------------------------------|---------------------------------------------
-| vm_network_ip4                | yes                                          |                                |                                               | IP4 address to set for the VM
-| vm_network_ip4_netmask_prefix | yes                                          |                                |                                               | IP4 address netmask prefex to set for the VM
-| vm_network_gw4                | yes                                          |                                |                                               | IP4 gateway to set for the VM
-| vm_network_dns4               | yes                                          |                                |                                               | List of IP4 DNS hosts to set for the VM
-| vm_network_ifname             | no                                           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
-| vm_network_conn_name          | no                                           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
-| virt_api_bastion              | no                                           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.
-| virt_api_insecure             | no                                           | False                          | True/False                                    | Whether the connection to the virtualization provider API is insecure or not, aka using trusted certificates.
-| virt_network                  | yes                                          |                                | Valid networks on the virtualization provider | Virtualization provider network to set for the VM
-| ovirt_url                     | If `ansible_virtualization_type` is `RHEV`   |                                |                                               | oVirt/RHV url for API calls
-| ovirt_username                | If `ansible_virtualization_type` is `RHEV`   |                                |                                               | oVirt/RHV username for API calls
-| ovirt_password                | If `ansible_virtualization_type` is `RHEV`   |                                |                                               | oVirt/RHV passwrod for API calls
-| vsphere_hostname              | If `ansible_virtualization_type` is `VMware` |                                |                                               | vSphere hostname for API calls
-| vsphere_username              | If `ansible_virtualization_type` is `VMware` |                                |                                               | vSphere username for API calls
-| vsphere_password              | If `ansible_virtualization_type` is `VMware` |                                |                                               | vSphere password for API calls
-| vsphere_datacenter            | If `ansible_virtualization_type` is `VMware` |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
+| parameter                     | required     | default                        | choices                                       | comments
+|-------------------------------|--------------|--------------------------------|-----------------------------------------------|---------------------------------------------
+| vm_network_ip4                | yes          |                                |                                               | IP4 address to set for the VM
+| vm_network_ip4_netmask_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
+| vm_network_gw4                | yes          |                                |                                               | IP4 gateway to set for the VM
+| vm_network_dns4               | yes          |                                |                                               | List of IP4 DNS hosts to set for the VM
+| vm_network_ifname             | no           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
+| vm_network_conn_name          | no           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
+| virt_api_bastion              | no           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.
+| virt_api_insecure             | no           | False                          | True/False                                    | Whether the connection to the virtualization provider API is insecure or not, aka using trusted certificates.
+| virt_network                  | yes          |                                | Valid networks on the virtualization provider | Virtualization provider network to set for the VM
+| ovirt_url                     | If oVirt/RHV |                                |                                               | oVirt/RHV url for API calls
+| ovirt_username                | If oVirt/RHV |                                |                                               | oVirt/RHV username for API calls
+| ovirt_password                | If oVirt/RHV |                                |                                               | oVirt/RHV passwrod for API calls
+| vsphere_hostname              | If vSphere   |                                |                                               | vSphere hostname for API calls
+| vsphere_username              | If vSphere   |                                |                                    | vSphere username for API calls
+| vsphere_password              | If vSphere   |                                |                                               | vSphere password for API calls
+| vsphere_datacenter            | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
