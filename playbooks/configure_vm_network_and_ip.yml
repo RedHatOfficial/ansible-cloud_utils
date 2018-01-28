@@ -1,0 +1,92 @@
+- name: Cloud | Configure VM Network and IP
+  hosts: all
+  gather_facts: True
+  tasks:
+    - name: Cloud | Configure VM Network and IP | Validate Variables
+      assert:
+        that:
+          - "virt_network is defined"
+          - "vm_network_ip4 is defined"
+          - "vm_network_ip4_netmask_prefix is defined"
+          - "vm_network_gw4 is defined"
+          - "vm_network_dns4 is defined"
+          - "vm_network_ip4_netmask_prefix is defined"
+          - "ansible_virtualization_type in ['RHEV', 'VMware']"
+
+    - name: Cloud | Configure VM Network and IP | oVirt/RHV | Validate Variables and Set Defaults
+      include_tasks: tasks/network/ovirt_network_validate_varibles_and_set_defautls.yml
+      when: ansible_virtualization_type == "RHEV"
+
+    - name: Cloud | Configure VM Network and IP | vSphere | Validate Variables and Set Defaults
+      include_tasks: tasks/network/vsphere_network_validate_varibles_and_set_defautls.yml
+      when: ansible_virtualization_type == "VMware"
+
+    - name: Cloud | Configure VM Network and IP | Set Defaults
+      set_fact:
+        virt_api_bastion: "{{ virt_api_bastion | default('localhost') }}"
+        virt_api_insecure: "{{ virt_api_insecure | default(False) }}"
+        vm_network_conn_name: "{{ vm_network_conn_name | default('System ' + vm_network_ifname) }}"
+
+    - name: Cloud | Configure VM Network and IP | VM
+      block:
+        - name: Cloud | Configure VM Network and IP | VM | Install nmcli Module Prerequists
+          yum:
+            name: '{{ item }}'
+            state: installed
+          with_items:
+            - NetworkManager-glib
+            - nm-connection-editor
+            - libsemanage-python
+            - policycoreutils-python
+
+        - name: Cloud | Configure VM Network and IP | VM | Configure Ethernet
+          nmcli:
+            type: ethernet
+            state: present
+            conn_name: "{{ vm_network_conn_name }}"
+            ifname: "{{ vm_network_ifname }}"
+            ip4: "{{ vm_network_ip4 }}/{{ vm_network_ip4_netmask_prefix }}"
+            gw4: "{{ vm_network_gw4 }}"
+            dns4: "{{ vm_network_dns4 }}"
+          register: nmcli_result
+          when: hostvars[inventory_hostname]['ansible_' + vm_network_ifname]['ipv4']['address'] != vm_network_ip4
+
+        - block:
+            # NOTE: can't just user service module to restart networking because the ssh connection is lost
+            #       so instead do an async operation and background a command to do the ifdown and ifup
+            - name: Cloud | Configure VM Network and IP | VM | Restart Network
+              shell: "(sleep 1; ifdown {{ vm_network_ifname }}; ifup {{ vm_network_ifname }};) &"
+              async: 5
+              poll: 0
+
+            - name: Cloud | Configure VM Network and IP | VM | Update ansible_host
+              set_fact:
+                ansible_host: "{{ vm_network_ip4 }}"
+          when: nmcli_result | changed
+
+    - name: Cloud | Configure VM Network and IP | oVirt/RHV | Include Configure VM NIC Tasks
+      include_tasks: tasks/network/ovirt_network_configure_vim_nic.yml
+      vars:
+        ovirt_insecure: "{{ virt_api_insecure }}"
+        ovirt_profile: "{{ virt_network }}"
+        ovirt_network: "{{ virt_network }}"
+      delegate_to: "{{ virt_api_bastion }}"
+      when: ansible_virtualization_type == "RHEV"
+
+    - name: Cloud | Configure VM Network and IP | vSphere | Include Configure VM NIC Tasks
+      include_tasks: tasks/network/vsphere_network_configure_vim_nic.yml
+      vars:
+        vsphere_validate_certs: "{{ not virt_api_insecure }}"
+        vsphere_network: "{{ virt_network }}"
+      delegate_to: "{{ virt_api_bastion }}"
+      when: ansible_virtualization_type == "VMware"
+
+    - name: Cloud | Configure VM Network and IP | VM | Verify
+      wait_for:
+        host: "{{ ansible_host }}"
+        delay: 0
+        port: 22
+        state: started
+        timeout: 600
+      delegate_to: localhost
+      become: False

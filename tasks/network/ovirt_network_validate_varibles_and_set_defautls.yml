@@ -1,0 +1,10 @@
+- name: Cloud | Configure VM Network and IP | oVirt/RHV | Validate Variables
+  assert:
+    that:
+      - "ovirt_url is defined"
+      - "ovirt_username is defined"
+      - "ovirt_password is defined"
+
+- name: Cloud | Configure VM Network and IP | oVirt/RHV | Set Defaults
+  set_fact:
+    vm_network_ifname: "{{ vm_network_ifname | default('eth0') }}"

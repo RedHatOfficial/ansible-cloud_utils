@@ -1,0 +1,13 @@
+- name: Cloud | oVirt/RHV | Modules Prequisits | packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    -  gcc
+    - libxml2-devel
+
+- name: Cloud | oVirt/RHV | Modules Prequisits | python libraries
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - ovirt-engine-sdk-python

@@ -1,0 +1,11 @@
+- name: Cloud | Configure VM Network and IP | vSphere | Validate Variables
+  assert:
+    that:
+      - "vsphere_hostname is defined"
+      - "vsphere_username is defined"
+      - "vsphere_password is defined"
+      - "vsphere_datacenter is defined"
+
+- name: Cloud | Configure VM Network and IP | vSphere | Set Defaults
+  set_fact:
+    vm_network_ifname: "{{ vm_network_ifname | default('ens192') }}"

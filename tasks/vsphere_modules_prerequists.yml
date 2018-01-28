@@ -1,0 +1,6 @@
+- name: Cloud | vSphere | Modules Prequisits | python libraries
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - pysphere
+    - pyvmomi
