@@ -7,6 +7,8 @@ Playbooks provided by this project.
 ### configure_vm_network_and_ip.yml
 Configures the virtualization provider network and IP for given hosts. This is useful if need migrate a VM from one vlan/subnet to another vlan/subnet by updating both the virtualization provider and destination host.
 
+The concept is that this playbook is cloud provider agnostic and can figure out how to move a VM from one network to another on any cloud provider, staying on that same provider, based on gathering facts about the VM. Though currently it has only been tested and written for a couple providers, as need arises for more providers the playbook can be easly extended to handle more.
+
 #### Tested With
 * Red Hat Virtualization
   * 4.0.5
