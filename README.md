@@ -41,7 +41,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | vsphere_password              | If vSphere   |                                |                                               | vSphere password for API calls
 | vsphere_datacenter            | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
-### optimize_kernel_scheduler_for_vmware_guests.yml
+### optimize_kernel_scheduler.yml
 Configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
 
 #### Notes
