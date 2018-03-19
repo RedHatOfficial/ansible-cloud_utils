@@ -42,7 +42,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | vsphere_datacenter            | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
 ### optimize_kernel_scheduler.yml
-Configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
+[What is the suggested I/O scheduler to improve disk performance when using Red Hat Enterprise Linux with virtualization?](https://access.redhat.com/solutions/5427).  The following playbook configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
 
 #### Notes
 * A backup of the grub configuration is made when changed.
