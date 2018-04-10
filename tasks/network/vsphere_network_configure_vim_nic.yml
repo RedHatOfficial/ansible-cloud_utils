@@ -16,5 +16,5 @@
       nic1:
         type: vmxnet3
         network: "{{ vsphere_network }}"
-        network_type: standard
+        network_type: "{{ vsphere_network_type | default('standard') }}"
   become: False
