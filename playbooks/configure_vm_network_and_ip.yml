@@ -58,7 +58,7 @@
               shell: "(sleep 1; ifdown {{ vm_network_ifname }}; ifup {{ vm_network_ifname }};) &"
               async: 5
               poll: 0
-              tags
+              tags:
                 - configure_vm_network_and_ip_restart_interface
 
             - name: Cloud | Configure VM Network and IP | VM | Update ansible_host
