@@ -1,6 +1,8 @@
-- name: Cloud | vSphere | Modules Prequisits | python libraries
+- name: Cloud | vSphere | Modules Prerequisites | python libraries
   pip:
     name: "{{ item }}"
   with_items:
     - pysphere
     - pyvmomi
+  tags:
+    - vsphere_pip_prerequisites
