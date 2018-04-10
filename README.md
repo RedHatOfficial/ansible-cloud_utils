@@ -27,7 +27,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | vm_network_ip4                | yes          |                                |                                               | IP4 address to set for the VM
 | vm_network_ip4_netmask_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
 | vm_network_gw4                | yes          |                                |                                               | IP4 gateway to set for the VM
-| vm_network_dns4               | yes          |                                |                                               | List of IP4 DNS hosts to set for the VM
+| vm_network_dns4               | no           |                                |                                               | List of IP4 DNS hosts to set for the VM
 | vm_network_ifname             | no           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
 | vm_network_conn_name          | no           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
 | virt_api_bastion              | no           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.

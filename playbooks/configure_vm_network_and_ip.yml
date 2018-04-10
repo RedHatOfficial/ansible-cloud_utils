@@ -9,7 +9,6 @@
           - "vm_network_ip4 is defined"
           - "vm_network_ip4_netmask_prefix is defined"
           - "vm_network_gw4 is defined"
-          - "vm_network_dns4 is defined"
           - "vm_network_ip4_netmask_prefix is defined"
           - "ansible_virtualization_type in ['RHEV', 'VMware']"
 
@@ -47,7 +46,7 @@
             ifname: "{{ vm_network_ifname }}"
             ip4: "{{ vm_network_ip4 }}/{{ vm_network_ip4_netmask_prefix }}"
             gw4: "{{ vm_network_gw4 }}"
-            dns4: "{{ vm_network_dns4 }}"
+            dns4: "{{ vm_network_dns4 | default('') }}"
           register: nmcli_result
           when: hostvars[inventory_hostname]['ansible_' + vm_network_ifname]['ipv4']['address'] != vm_network_ip4
 
