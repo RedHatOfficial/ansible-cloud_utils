@@ -56,8 +56,9 @@
             #       so instead do an async operation and background a command to do the ifdown and ifup
             - name: Cloud | Configure VM Network and IP | VM | Restart Interface
               shell: "(sleep 1; ifdown {{ vm_network_ifname }}; ifup {{ vm_network_ifname }};) &"
-              async: 5
+              async: 120
               poll: 0
+              register: vm_restart_interface_result
               tags:
                 - configure_vm_network_and_ip_restart_interface
 
