@@ -54,10 +54,12 @@
         - block:
             # NOTE: can't just user service module to restart networking because the ssh connection is lost
             #       so instead do an async operation and background a command to do the ifdown and ifup
-            - name: Cloud | Configure VM Network and IP | VM | Restart Network
+            - name: Cloud | Configure VM Network and IP | VM | Restart Interface
               shell: "(sleep 1; ifdown {{ vm_network_ifname }}; ifup {{ vm_network_ifname }};) &"
               async: 5
               poll: 0
+              tags
+                - configure_vm_network_and_ip_restart_interface
 
             - name: Cloud | Configure VM Network and IP | VM | Update ansible_host
               set_fact:
