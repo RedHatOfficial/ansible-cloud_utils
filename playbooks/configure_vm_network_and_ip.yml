@@ -55,7 +55,7 @@
             # NOTE: can't just user service module to restart networking because the ssh connection is lost
             #       so instead do an async operation and background a command to do the ifdown and ifup
             - name: Cloud | Configure VM Network and IP | VM | Restart Interface
-              shell: "(sleep 1; ifdown {{ vm_network_ifname }}; ifup {{ vm_network_ifname }};) &"
+              shell: "sleep 10 && ifdown {{ vm_network_ifname }} && ifup {{ vm_network_ifname }}"
               async: 120
               poll: 0
               register: vm_restart_interface_result
