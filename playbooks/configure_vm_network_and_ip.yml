@@ -63,6 +63,8 @@
               set_fact:
                 ansible_host: "{{ vm_network_ip4 }}"
           when: nmcli_result | changed
+      tags:
+        - configure_vm_network_and_ip_update_ip
 
     - name: Cloud | Configure VM Network and IP | oVirt/RHV | Include Configure VM NIC Tasks
       include_tasks: tasks/network/ovirt_network_configure_vim_nic.yml
