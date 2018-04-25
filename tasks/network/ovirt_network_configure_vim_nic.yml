@@ -1,20 +1,23 @@
-- name: Cloud | Configure VM Network and IP | oVirt/RHV | Install Virt Module Prerequists
-  include_tasks: tasks/ovirt_modules_prerequists.yml
-  run_once: True
+---
+- block:
+    - name: Cloud | Configure VM Network and IP | oVirt/RHV | Install Virt Module Prerequists
+      include_tasks: tasks/ovirt_modules_prerequists.yml
+      run_once: True
 
-- name: Cloud | Configure VM Network and IP | oVirt/RHV | Authenticate
-  ovirt_auth:
-    url: "{{ ovirt_url }}"
-    username: "{{ ovirt_username }}"
-    password: "{{ ovirt_password }}"
-    insecure: "{{ ovirt_insecure }}"
+    - name: Cloud | Configure VM Network and IP | oVirt/RHV | Authenticate
+      ovirt_auth:
+        url: "{{ ovirt_url }}"
+        username: "{{ ovirt_username }}"
+        password: "{{ ovirt_password }}"
+        insecure: "{{ ovirt_insecure }}"
 
-- name: Cloud | Configure VM Network and IP | oVirt/RHV | Configure VM NIC
-  ovirt_nics:
-    auth: "{{ ovirt_auth }}"
-    state: present
-    vm: "{{ ansible_fqdn }}"
-    name: nic1
-    interface: virtio
-    profile: "{{ ovirt_profile }}"
-    network: "{{ ovirt_network }}"
+    - name: Cloud | Configure VM Network and IP | oVirt/RHV | Configure VM NIC
+      ovirt_nics:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        vm: "{{ ansible_fqdn }}"
+        name: nic1
+        interface: virtio
+        profile: "{{ ovirt_profile }}"
+        network: "{{ ovirt_network }}"
+  delegate_to: "{{ virt_api_bastion }}"

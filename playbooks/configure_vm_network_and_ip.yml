@@ -81,7 +81,6 @@
         ovirt_insecure: "{{ virt_api_insecure }}"
         ovirt_profile: "{{ virt_network }}"
         ovirt_network: "{{ virt_network }}"
-      delegate_to: "{{ virt_api_bastion }}"
       when: ansible_virtualization_type == "RHEV"
 
     - name: Cloud | Configure VM Network and IP | vSphere | Include Configure VM NIC Tasks
@@ -89,7 +88,6 @@
       vars:
         vsphere_validate_certs: "{{ not virt_api_insecure }}"
         vsphere_network: "{{ virt_network }}"
-      delegate_to: "{{ virt_api_bastion }}"
       when: ansible_virtualization_type == "VMware"
 
     - name: Cloud | Configure VM Network and IP | VM | Verify

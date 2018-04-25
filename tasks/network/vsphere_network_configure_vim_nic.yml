@@ -1,20 +1,23 @@
-- name: Cloud | Configure VM Network and IP | vSphere | Install Virt Module Prerequists
-  include_tasks: tasks/vsphere_modules_prerequists.yml
-  run_once: True
+---
+- block:
+    - name: Cloud | Configure VM Network and IP | vSphere | Install Virt Module Prerequists
+      include_tasks: tasks/vsphere_modules_prerequists.yml
+      run_once: True
 
-- name: Cloud | Configure VM Network and IP | vSphere | Configure VM NIC
-  vsphere_guest:
-    vcenter_hostname: "{{ vsphere_hostname }}"
-    username: "{{ vsphere_username }}"
-    password: "{{ vsphere_password }}"
-    validate_certs: "{{ vsphere_validate_certs }}"
-    esxi:
-      datacenter: "{{ vsphere_datacenter }}"
-    state: reconfigured
-    guest: "{{ ansible_fqdn }}"
-    vm_nic:
-      nic1:
-        type: vmxnet3
-        network: "{{ vsphere_network }}"
-        network_type: "{{ vsphere_network_type | default('standard') }}"
-  become: False
+    - name: Cloud | Configure VM Network and IP | vSphere | Configure VM NIC
+      vsphere_guest:
+        vcenter_hostname: "{{ vsphere_hostname }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate_certs }}"
+        esxi:
+          datacenter: "{{ vsphere_datacenter }}"
+        state: reconfigured
+        guest: "{{ ansible_fqdn }}"
+        vm_nic:
+          nic1:
+            type: vmxnet3
+            network: "{{ vsphere_network }}"
+            network_type: "{{ vsphere_network_type | default('standard') }}"
+      become: False
+  delegate_to: "{{ virt_api_bastion }}"
