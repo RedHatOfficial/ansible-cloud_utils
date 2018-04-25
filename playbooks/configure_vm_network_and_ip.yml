@@ -37,6 +37,13 @@
             - nm-connection-editor
             - libsemanage-python
             - policycoreutils-python
+          register: install_nmcli_module_prerequists_result
+        
+        - name: Cloud | Configure VM Network and IP | VM | Restart NetworkManager
+          service:
+            name: NetworkManager
+            state: restarted
+          when: install_nmcli_module_prerequists_result.changed
 
         - name: Cloud | Configure VM Network and IP | VM | Configure Ethernet
           nmcli:
