@@ -1,0 +1,46 @@
+---
+- name: IdM | Register IPA Client
+  hosts: all
+  tasks:
+  - name: IdM | Register IPA client | Assert required variables
+    assert:
+      that:
+        - idm_server is defined
+        - idm_domain is defined
+        - idm_enroll_user is defined
+        - idm_enroll_password is defined
+
+  - name: IdM | Register IPA client | Set default | idm_register_force
+    set_fact:
+      idm_register_force: False
+    when: idm_register_force is not defined
+
+  - name: IdM | Register IPA client | Install packages
+    package:
+      state: present
+      name: "{{ item }}"
+    with_items:
+      - ipa-client
+
+  - name: IdM | Register IPA client | Check if IPA client already registered with IdM
+    register: ipa_client_configured
+    stat:
+      path: /etc/ipa/default.conf
+
+  - name: IdM | Register IPA client | Uninstall IPA client
+    command: >
+      ipa-client-install
+        --uninstall
+    when: ipa_client_configured.stat.exists and idm_register_force
+
+  - name: IdM | Register IPA client | Register IPA client with IdM
+    command: >
+      ipa-client-install
+        --principal={{  idm_enroll_user  }}
+        --password={{ idm_enroll_password }}
+        --ssh-trust-dns
+        --mkhomedir
+        --force-join
+        --unattended
+        --no-ntp
+    when: not ipa_client_configured.stat.exists or idm_register_force
