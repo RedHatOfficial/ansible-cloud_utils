@@ -22,7 +22,7 @@ Registers an IPA client with an IdM or IPA server.
 #### Notes
 * Does not configure NTP
 
-### configure_vm_network_and_ip.yml
+### configure\_vm\_network\_and\_ip.yml
 Configures the virtualization provider network and IP for given hosts. This is useful if need migrate a VM from one vlan/subnet to another vlan/subnet by updating both the virtualization provider and destination host.
 
 The concept is that this playbook is cloud provider agnostic and can figure out how to move a VM from one network to another on any cloud provider, staying on that same provider, based on gathering facts about the VM. Though currently it has only been tested and written for a couple providers, as need arises for more providers the playbook can be easly extended to handle more.
@@ -40,26 +40,26 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 * `ansible_virtualization_type` in ['RHEV', 'VMware']
 
 #### Options
-| parameter                     | required     | default                        | choices                                       | comments
-|-------------------------------|--------------|--------------------------------|-----------------------------------------------|---------------------------------------------
-| vm_network_ip4                | yes          |                                |                                               | IP4 address to set for the VM
-| vm_network_ip4_netmask_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
-| vm_network_gw4                | yes          |                                |                                               | IP4 gateway to set for the VM
-| vm_network_dns4               | no           |                                |                                               | List of IP4 DNS hosts to set for the VM
-| vm_network_ifname             | no           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
-| vm_network_conn_name          | no           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
-| virt_api_bastion              | no           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.
-| virt_api_insecure             | no           | False                          | True/False                                    | Whether the connection to the virtualization provider API is insecure or not, aka using trusted certificates.
-| virt_network                  | yes          |                                | Valid networks on the virtualization provider | Virtualization provider network to set for the VM
-| ovirt_url                     | If oVirt/RHV |                                |                                               | oVirt/RHV url for API calls
-| ovirt_username                | If oVirt/RHV |                                |                                               | oVirt/RHV username for API calls
-| ovirt_password                | If oVirt/RHV |                                |                                               | oVirt/RHV passwrod for API calls
-| vsphere_hostname              | If vSphere   |                                |                                               | vSphere hostname for API calls
-| vsphere_username              | If vSphere   |                                |                                    | vSphere username for API calls
-| vsphere_password              | If vSphere   |                                |                                               | vSphere password for API calls
-| vsphere_datacenter            | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
+| parameter                         | required     | default                        | choices                                       | comments
+|-----------------------------------|--------------|--------------------------------|-----------------------------------------------|---------------------------------------------
+| vm\_network\_ip4                  | yes          |                                |                                               | IP4 address to set for the VM
+| vm\_network\_ip4\_netmask\_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
+| vm\_network\_gw4                  | yes          |                                |                                               | IP4 gateway to set for the VM
+| vm\_network\_dns4                 | no           |                                |                                               | List of IP4 DNS hosts to set for the VM
+| vm\_network\_ifname               | no           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
+| vm\_network\_conn\_name           | no           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
+| virt\_api\_bastion                | no           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.
+| virt\_api\_insecure               | no           | False                          | True/False                                    | Whether the connection to the virtualization provider API is insecure or not, aka using trusted certificates.
+| virt\_network                     | yes          |                                | Valid networks on the virtualization provider | Virtualization provider network to set for the VM
+| ovirt\_url                        | If oVirt/RHV |                                |                                               | oVirt/RHV url for API calls
+| ovirt\_username                   | If oVirt/RHV |                                |                                               | oVirt/RHV username for API calls
+| ovirt\_password                   | If oVirt/RHV |                                |                                               | oVirt/RHV passwrod for API calls
+| vsphere\_hostname                 | If vSphere   |                                |                                               | vSphere hostname for API calls
+| vsphere\_username                 | If vSphere   |                                |                                    | vSphere username for API calls
+| vsphere\_password                 | If vSphere   |                                |                                               | vSphere password for API calls
+| vsphere\_datacenter               | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
-### optimize_kernel_scheduler.yml
+### optimize\_kernel\_scheduler.yml
 [What is the suggested I/O scheduler to improve disk performance when using Red Hat Enterprise Linux with virtualization?](https://access.redhat.com/solutions/5427).  The following playbook configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
 
 #### Notes
