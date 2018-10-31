@@ -75,6 +75,14 @@
       tags:
         - configure_vm_network_and_ip_update_ip
 
+    - name: Cloud | Configure VM Network and IP | VM | Configure /etc/hosts
+      copy:
+        dest: /etc/hosts
+        content: |-
+          127.0.0.1   localhost localhost.localdomain
+          {{ vm_network_ip4 }} {{ ansible_fqdn }} {{ ansible_hostname }}
+      when: ansible_manage_etc_hosts | default( false ) | bool
+
     - name: Cloud | Configure VM Network and IP | oVirt/RHV | Include Configure VM NIC Tasks
       include_tasks: tasks/network/ovirt_network_configure_vim_nic.yml
       vars:
