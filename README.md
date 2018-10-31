@@ -42,6 +42,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 #### Options
 | parameter                         | required     | default                        | choices                                       | comments
 |-----------------------------------|--------------|--------------------------------|-----------------------------------------------|---------------------------------------------
+| ansible\_manage\_etc\_hosts       | no           | false                          | true, false, yes, no                          | Flag to control if /etc/hosts is updated with newly configured ip address
 | vm\_network\_ip4                  | yes          |                                |                                               | IP4 address to set for the VM
 | vm\_network\_ip4\_netmask\_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
 | vm\_network\_gw4                  | yes          |                                |                                               | IP4 gateway to set for the VM
@@ -55,7 +56,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | ovirt\_username                   | If oVirt/RHV |                                |                                               | oVirt/RHV username for API calls
 | ovirt\_password                   | If oVirt/RHV |                                |                                               | oVirt/RHV passwrod for API calls
 | vsphere\_hostname                 | If vSphere   |                                |                                               | vSphere hostname for API calls
-| vsphere\_username                 | If vSphere   |                                |                                    | vSphere username for API calls
+| vsphere\_username                 | If vSphere   |                                |                                               | vSphere username for API calls
 | vsphere\_password                 | If vSphere   |                                |                                               | vSphere password for API calls
 | vsphere\_datacenter               | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
