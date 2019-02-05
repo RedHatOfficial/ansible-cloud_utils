@@ -1,38 +1,68 @@
-Role Name
-=========
+# ansible-cloud_utils
+Ansible utilities for performing operations against public and private "clouds".
 
-A brief description of the role goes here.
+## Playbooks
+Playbooks provided by this project.
 
-Requirements
-------------
+### enable-chrony.yml
+Enables `chrony` and disables `ntp`.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+### idm-register-ipa-client.yml
+Registers an IPA client with an IdM or IPA server.
 
-Role Variables
---------------
+#### Options
+| parameter             | requried | default | comments
+|-----------------------|----------|---------|---------
+| idm\_server           | yes      |         | The IdM/IPA server to regsiter the IPA client with
+| idm\_domain           | yes      |         | The IdM/IPA domain to register the IPA client with
+| idm\_enroll\_user     | yes      |         | The IdM/IPA user to enroll the IPA client with
+| idm\_enroll\_password | yes      |         | The IdM/IPA password to enroll the IPA client with
+| idm\_register\_force  | no       | False   | If `true` and IPA client is already registered it will be unregistered.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+#### Notes
+* Does not configure NTP
 
-Dependencies
-------------
+### configure\_vm\_network\_and\_ip.yml
+Configures the virtualization provider network and IP for given hosts. This is useful if need migrate a VM from one vlan/subnet to another vlan/subnet by updating both the virtualization provider and destination host.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+The concept is that this playbook is cloud provider agnostic and can figure out how to move a VM from one network to another on any cloud provider, staying on that same provider, based on gathering facts about the VM. Though currently it has only been tested and written for a couple providers, as need arises for more providers the playbook can be easly extended to handle more.
 
-Example Playbook
-----------------
+#### Tested With
+* Red Hat Virtualization
+  * 4.0.5
+* VMware vCenter
+  * 5.1.0
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+#### Assumptions
+* Only handles one network interface
+* Assumes migrating the first network interface
+* target host facts are gathered so that `ansible_virtualization_type` is set
+* `ansible_virtualization_type` in ['RHEV', 'VMware']
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+#### Options
+| parameter                         | required     | default                        | choices                                       | comments
+|-----------------------------------|--------------|--------------------------------|-----------------------------------------------|---------------------------------------------
+| ansible\_manage\_etc\_hosts       | no           | false                          | true, false, yes, no                          | Flag to control if /etc/hosts is updated with newly configured ip address
+| vm\_network\_ip4                  | yes          |                                |                                               | IP4 address to set for the VM
+| vm\_network\_ip4\_netmask\_prefix | yes          |                                |                                               | IP4 address netmask prefex to set for the VM
+| vm\_network\_gw4                  | yes          |                                |                                               | IP4 gateway to set for the VM
+| vm\_network\_dns4                 | no           |                                |                                               | List of IP4 DNS hosts to set for the VM
+| vm\_network\_ifname               | no           | `eth0` for `RHEV`, `ens192` for `VMware` |                                     | Ethernet interface name to set for the VM
+| vm\_network\_conn\_name           | no           | System {{ vm_network_ifname }} |                                               | Ethernet connection name to set for the vm
+| virt\_api\_bastion                | no           | localhost                      |                                               | Bastion host to use to do API calls to the virtulization provider.
+| virt\_api\_insecure               | no           | False                          | True/False                                    | Whether the connection to the virtualization provider API is insecure or not, aka using trusted certificates.
+| virt\_network                     | yes          |                                | Valid networks on the virtualization provider | Virtualization provider network to set for the VM
+| ovirt\_url                        | If oVirt/RHV |                                |                                               | oVirt/RHV url for API calls
+| ovirt\_username                   | If oVirt/RHV |                                |                                               | oVirt/RHV username for API calls
+| ovirt\_password                   | If oVirt/RHV |                                |                                               | oVirt/RHV passwrod for API calls
+| vsphere\_hostname                 | If vSphere   |                                |                                               | vSphere hostname for API calls
+| vsphere\_username                 | If vSphere   |                                |                                               | vSphere username for API calls
+| vsphere\_password                 | If vSphere   |                                |                                               | vSphere password for API calls
+| vsphere\_datacenter               | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
-License
--------
+### optimize\_kernel\_scheduler.yml
+[What is the suggested I/O scheduler to improve disk performance when using Red Hat Enterprise Linux with virtualization?](https://access.redhat.com/solutions/5427).  The following playbook configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+#### Notes
+* A backup of the grub configuration is made when changed.
+* This playbook does not perform the required reboot to enable this paramater.
