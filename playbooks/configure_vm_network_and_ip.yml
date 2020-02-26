@@ -30,13 +30,12 @@
       block:
         - name: Cloud | Configure VM Network and IP | VM | Install nmcli Module Prerequists
           yum:
-            name: '{{ item }}'
+            name:
+              - NetworkManager-glib
+              - nm-connection-editor
+              - libsemanage-python
+              - policycoreutils-python
             state: installed
-          with_items:
-            - NetworkManager-glib
-            - nm-connection-editor
-            - libsemanage-python
-            - policycoreutils-python
           register: install_nmcli_module_prerequists_result
 
         - name: Cloud | Configure VM Network and IP | VM | Configure /etc/hosts
@@ -51,7 +50,7 @@
           service:
             name: NetworkManager
             state: restarted
-          when: install_nmcli_module_prerequists_result.changed
+          when: install_nmcli_module_prerequists_result is changed
 
         - name: Cloud | Configure VM Network and IP | VM | Configure Ethernet
           nmcli:
@@ -79,7 +78,7 @@
             - name: Cloud | Configure VM Network and IP | VM | Update ansible_host
               set_fact:
                 ansible_host: "{{ vm_network_ip4 }}"
-          when: nmcli_result | changed
+          when: nmcli_result is changed
       tags:
         - configure_vm_network_and_ip_update_ip
 
@@ -99,11 +98,7 @@
       when: ansible_virtualization_type == "VMware"
 
     - name: Cloud | Configure VM Network and IP | VM | Verify
-      wait_for:
-        host: "{{ ansible_host }}"
+      wait_for_connection:
         delay: 0
-        port: 22
-        state: started
         timeout: 600
-      delegate_to: localhost
       become: False
