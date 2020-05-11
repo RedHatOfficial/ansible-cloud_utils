@@ -84,6 +84,7 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | vsphere\_username                 | If vSphere   |                                |                                               | vSphere username for API calls
 | vsphere\_password                 | If vSphere   |                                |                                               | vSphere password for API calls
 | vsphere\_datacenter               | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
+| vsphere\_cluster                  | If vSphere   |                                |                                               | vSphere cluster for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
 ### optimize\_kernel\_scheduler
 [What is the suggested I/O scheduler to improve disk performance when using Red Hat Enterprise Linux with virtualization?](https://access.redhat.com/solutions/5427).  The following playbook configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
