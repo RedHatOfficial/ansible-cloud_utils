@@ -1,6 +1,8 @@
 # ansible-cloud\_utils
 Ansible Collection for performing operations against public and private "clouds".
 
+Minimum Ansible Version: Ansible 2.9
+
 ## Building this Collection
 ```
 pushd redhatofficial/cloud_utils/
