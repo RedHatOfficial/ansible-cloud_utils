@@ -1,0 +1,6 @@
+---
+
+
+- name: Cloud | VMware | Optimize Kernel Scheduler
+  import_tasks: tasks/enable_noop_kernel_param.yml
+  when: ansible_virtualization_type == "VMware"

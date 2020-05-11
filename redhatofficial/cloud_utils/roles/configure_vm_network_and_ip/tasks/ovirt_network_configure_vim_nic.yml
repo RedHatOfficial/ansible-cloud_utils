@@ -12,7 +12,7 @@
         insecure: "{{ ovirt_insecure }}"
 
     - name: Cloud | Configure VM Network and IP | oVirt/RHV | Configure VM NIC
-      ovirt_nics:
+      ovirt_nic:
         auth: "{{ ovirt_auth }}"
         state: present
         vm: "{{ ansible_fqdn }}"

@@ -1,10 +1,10 @@
 ---
-
 - name: Cloud | Optimize Kernel Scheduler
   hosts: all
   become: True
   gather_facts: True
+  collections:
+    - redhatofficial.cloud_utils
   tasks:
-    - name: Cloud | VMware | Optimize Kernel Scheduler
-      include_tasks: tasks/enable_noop_kernel_param.yml
-      when: ansible_virtualization_type == "VMware"
+    - import_role:
+        name: optimize_kernel_scheduler
