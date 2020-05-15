@@ -1,0 +1,22 @@
+namespace: redhatofficial
+name: cloud_utils
+version: 1.0.0
+
+readme: README.md
+
+authors:
+- Andrew Becker
+- Ian Tewksbury
+- Curtis Matthews
+
+description: |-
+  Ansible utilities for performing operations against public and private clouds
+
+license:
+- Apache-2.0
+
+license_file: LICENSE
+
+repository: https://github.com/RedHatOfficial/ansible-cloud_utils
+
+issues: https://github.com/RedHatOfficial/ansible-cloud_utils/issues

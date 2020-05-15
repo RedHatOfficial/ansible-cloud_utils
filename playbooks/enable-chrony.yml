@@ -1,22 +1,8 @@
 ---
 - name: Enable Chrony
   hosts: all
+  collections:
+    - redhatofficial.cloud_utils
   tasks:
-  - name: Enable Chrony | Install packages
-    package:
-      state: present
-      name: "{{ item }}"
-    with_items:
-      - chrony
-
-  - name: Enable Chrony | Disable ntpd service
-    service:
-      name: ntpd
-      state: stopped
-      enabled: no
-
-  - name: Enable Chrone | Enable chronyd service
-    service:
-      name: chronyd
-      state: started
-      enabled: yes
+    - import_role:
+        name: enable_chrony

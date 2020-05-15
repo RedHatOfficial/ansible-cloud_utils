@@ -1,13 +1,40 @@
-# ansible-cloud_utils
-Ansible utilities for performing operations against public and private "clouds".
+# ansible-cloud\_utils
+Ansible Collection for performing operations against public and private "clouds".
 
-## Playbooks
-Playbooks provided by this project.
+Minimum Ansible Version: Ansible 2.9
 
-### enable-chrony.yml
+## Building this Collection
+```
+pushd redhatofficial/cloud_utils/
+ansible-galaxy collection build
+popd
+```
+
+
+## Using this Collection
+
+Information about using collections can be found here:
+- https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+
+The roles in this collection are in the `redhatofficial.cloud_utils` namespace.
+
+They can be used by adding the collection to the playbook:
+
+```
+---
+- hosts: all
+  collections:
+    - redhatofficial.cloud_utils
+```
+
+## Roles
+Roles provided by this project.
+Examples of how to use these roles are included in the top-level `playbooks` directory
+
+### enable\_chrony
 Enables `chrony` and disables `ntp`.
 
-### idm-register-ipa-client.yml
+### idm\_register\_ipa\_client
 Registers an IPA client with an IdM or IPA server.
 
 #### Options
@@ -22,7 +49,7 @@ Registers an IPA client with an IdM or IPA server.
 #### Notes
 * Does not configure NTP
 
-### configure\_vm\_network\_and\_ip.yml
+### configure\_vm\_network\_and\_ip
 Configures the virtualization provider network and IP for given hosts. This is useful if need migrate a VM from one vlan/subnet to another vlan/subnet by updating both the virtualization provider and destination host.
 
 The concept is that this playbook is cloud provider agnostic and can figure out how to move a VM from one network to another on any cloud provider, staying on that same provider, based on gathering facts about the VM. Though currently it has only been tested and written for a couple providers, as need arises for more providers the playbook can be easly extended to handle more.
@@ -59,8 +86,9 @@ The concept is that this playbook is cloud provider agnostic and can figure out 
 | vsphere\_username                 | If vSphere   |                                |                                               | vSphere username for API calls
 | vsphere\_password                 | If vSphere   |                                |                                               | vSphere password for API calls
 | vsphere\_datacenter               | If vSphere   |                                |                                               | vSphere datacenter for API calls. NOTE: attempted to determine this dynamically but could not find a way.
+| vsphere\_cluster                  | If vSphere   |                                |                                               | vSphere cluster for API calls. NOTE: attempted to determine this dynamically but could not find a way.
 
-### optimize\_kernel\_scheduler.yml
+### optimize\_kernel\_scheduler
 [What is the suggested I/O scheduler to improve disk performance when using Red Hat Enterprise Linux with virtualization?](https://access.redhat.com/solutions/5427).  The following playbook configures noop for the IO queue scheduler kernel parameter for RHEL VMs on VMware infrastructure per [How to use the Noop IO Scheduler](https://access.redhat.com/solutions/109223).
 
 #### Notes

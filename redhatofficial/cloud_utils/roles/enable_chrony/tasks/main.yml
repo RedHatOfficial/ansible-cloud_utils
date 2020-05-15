@@ -1,0 +1,17 @@
+---
+- name: Enable Chrony | Install packages
+  package:
+    state: present
+    name: chrony
+
+- name: Enable Chrony | Disable ntpd service
+  service:
+    name: ntpd
+    state: stopped
+    enabled: no
+
+- name: Enable Chrone | Enable chronyd service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
