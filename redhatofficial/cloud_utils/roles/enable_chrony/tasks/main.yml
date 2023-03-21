@@ -10,7 +10,7 @@
     state: stopped
     enabled: no
 
-- name: Enable Chrone | Enable chronyd service
+- name: Enable Chrony | Enable chronyd service
   service:
     name: chronyd
     state: started
